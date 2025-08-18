@@ -3,20 +3,13 @@ from bs4 import BeautifulSoup
 import nagisa
 import sys
 
-from numpy.ma.core import count
-
-
 def scrape_japanese_words(url):
     try:
-        # Send a GET request to the URL
         response = requests.get(url)
-        # Raise an exception for bad status codes (4xx or 5xx)
         response.raise_for_status()
 
-        # Parse the HTML content using Beautiful Soup
         soup = BeautifulSoup(response.content, 'html.parser')
 
-        # Find all text content on the page
         text_content = soup.get_text()
 
         words = nagisa.tagging(text_content).words
@@ -35,22 +28,9 @@ def scrape_japanese_words(url):
         print(f"An unexpected error occurred: {e}")
         return []
 
-
-# Example usage:
 if __name__ == "__main__":
 
     print(sys.path)
 
-    # Replace with the URL you want to scrape
     url_to_scrape = "https://www3.nhk.or.jp/news/easy/ne2025081511586/ne2025081511586.html"
-
-    # Run the scraper
     japanese_words = scrape_japanese_words(url_to_scrape)
-
-    # Print the results
-    if japanese_words:
-        print(japanese_words)
-        #for word in japanese_words:
-        #    print(word)
-    else:
-        print("No Japanese words found or an error occurred.")
