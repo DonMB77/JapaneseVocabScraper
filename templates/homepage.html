@@ -1,8 +1,37 @@
 {% extends 'base.html' %}
 
-{% block head %} 
+{% block head %}
 <link rel="stylesheet" href="../static/style.css">
 {% endblock %}
 
-{% block body %} 
+{% block body %}
+{% if words|length == 0 %}
+<div class="input-group mb-3">
+    <form action="/" method="POST">
+        <input type="text" name="url" lass="form-control" placeholder="Input URL" aria-label="Recipient's username"
+            aria-describedby="button-addon2">
+        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Submit</button>
+    </form>
+</div>
+{% endif %}
+<div>
+    {% if words|length > 0 %}
+        <table>
+            <tr>
+                <td>id</td>
+                <td>readingJapanese</td>
+                <td>wordType</td>
+                <td>translation</td>
+            </tr>
+            {% for item in words %}
+            <tr>
+                <td>id</td>
+                <td>{{item[0]}}</td>
+                <td>{{item[1]}}</td>
+                <td>translation</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {%  endif %}
+</div>
 {% endblock %}

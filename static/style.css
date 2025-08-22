@@ -1,3 +1,9 @@
 .nav {
     border-bottom: 5px solid black;
 }
+
+.input-group {
+    padding-top: 25em;
+    width: 50%;
+    margin: auto;
+}
