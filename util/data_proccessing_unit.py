@@ -2,6 +2,7 @@ import re
 import requests
 from bs4 import BeautifulSoup
 import nagisa
+import simplejson
 
 def has_latin_characters(element):
     return bool(re.search('[a-zA-Z0-9]', element))
@@ -40,3 +41,19 @@ def scrape_japanese_words(url):
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
         return []
+    
+def translate_japanese_word(word):
+    url = f"https://jisho.org/api/v1/search/words?keyword={word}"
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        data = response.json()
+        if data['data']:
+            first_entry = data['data'][0]
+            english_meanings = first_entry['senses'][0]['english_definitions']
+            print(english_meanings)
+        else:
+            return "No translation found."
+    except requests.exceptions.RequestException as e:
+        print(f"Error during request: {e}")
+        return "Error fetching translation."

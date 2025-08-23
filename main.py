@@ -25,7 +25,8 @@ def index():
     if request.method == "POST":
         words = data_proccessing_unit.scrape_japanese_words(request.form['url'])
         firstFiveWords = words[:5]
-        print(firstFiveWords)
+        meaningTest = data_proccessing_unit.translate_japanese_word(firstFiveWords[0][0])
+        print(meaningTest)
         return render_template("homepage.html", words=firstFiveWords)
     
 if __name__ in "__main__":
