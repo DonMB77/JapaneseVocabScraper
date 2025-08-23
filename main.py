@@ -24,10 +24,13 @@ def index():
         return render_template("homepage.html")
     if request.method == "POST":
         words = data_proccessing_unit.scrape_japanese_words(request.form['url'])
-        firstFiveWords = words[:5]
-        meaningTest = data_proccessing_unit.translate_japanese_word(firstFiveWords[0][0])
-        print(meaningTest)
-        return render_template("homepage.html", words=firstFiveWords)
+        fiveWords = words[:5]
+        fiveWordsMeaning = [data_proccessing_unit.get_jisho_translation(item[0]) for item in fiveWords]
+        print(fiveWordsMeaning)
+        for i in range(len(fiveWords)):
+            fiveWords[i].append(fiveWordsMeaning[i])
+        print(fiveWords)
+        return render_template("homepage.html", words=fiveWords, meanings=fiveWordsMeaning)
     
 if __name__ in "__main__":
     with app.app_context():
