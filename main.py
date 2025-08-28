@@ -35,9 +35,6 @@ def index():
         except Exception as e:
             print(f"{word}: {e}")
         db.session.commit()
-        first = Vocab.query.first()
-        print(words[0])
-        print(first)
         fiveWords = words[:5]
         fiveWordsMeaning = [data_proccessing_unit.get_jisho_translation(item[0]) for item in fiveWords]
         for i in range(len(fiveWords)):

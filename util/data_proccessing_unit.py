@@ -30,9 +30,10 @@ def scrape_japanese_words(url):
         tags = nagisa.tagging(text_content).postags
         word_tag_array = [[word, tag] for word, tag in zip(words, tags)]
         strings_to_delete = ['補助記号','空白','助詞','助動詞', '接尾辞', '英単語']
-        filtered_words = [element for element in word_tag_array if not any(e in element for e in strings_to_delete or len(element[0]) != 2)]
+        filtered_words = [element for element in word_tag_array if not any(e in element for e in strings_to_delete)]
         filtered_words = delete_latin_words_from_list(filtered_words)
         filtered_words = delete_newline_elements(filtered_words)
+        filtered_words = [sublist for sublist in filtered_words if len(sublist) == 2]
         return filtered_words
 
     except requests.exceptions.RequestException as e:
