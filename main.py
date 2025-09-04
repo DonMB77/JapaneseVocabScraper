@@ -35,11 +35,11 @@ def index():
         except Exception as e:
             print(f"{word}: {e}")
         db.session.commit()
-        fiveWords = words[:5]
-        fiveWordsMeaning = [data_proccessing_unit.get_jisho_translation(item[0]) for item in fiveWords]
-        for i in range(len(fiveWords)):
-            fiveWords[i].append(fiveWordsMeaning[i])
-        return render_template("homepage.html", words=fiveWords, meanings=fiveWordsMeaning)
+        db.session.commit()
+        fiveWords = Vocab.query.limit(5).all()
+        fiveWordsMeaning = [data_proccessing_unit.get_jisho_translation(vocab.readingJapanese) for vocab in fiveWords]
+        fiveWordsList = [[vocab.readingJapanese, vocab.wordType, fiveWordsMeaning[i]] for i, vocab in enumerate(fiveWords)]
+        return render_template("homepage.html", words=fiveWordsList, meanings=fiveWordsMeaning)
     
 if __name__ in "__main__":
     with app.app_context():
