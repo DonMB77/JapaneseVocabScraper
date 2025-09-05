@@ -21,12 +21,21 @@
                 <td>readingJapanese</td>
                 <td>wordType</td>
                 <td>translation</td>
+                <td>Save</td>
             </tr>
             {% for item in words %}
             <tr>
                 <td>{{ item.readingJapanese }}</td>
                 <td>{{ item.wordType }}</td>
                 <td>{{ item.translation }}</td>
+                <td>
+                    <form method="post" action="/save_vocab" style="display:inline;">
+                        <input type="hidden" name="readingJapanese" value="{{ item.readingJapanese }}">
+                        <input type="hidden" name="wordType" value="{{ item.wordType }}">
+                        <input type="hidden" name="translation" value="{{ item.translation }}">
+                        <button type="submit" class="btn btn-success btn-sm">Save</button>
+                    </form>
+                </td>
             </tr>
             {% endfor %}
         </table>
