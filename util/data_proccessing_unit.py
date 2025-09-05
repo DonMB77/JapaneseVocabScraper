@@ -34,7 +34,15 @@ def scrape_japanese_words(url):
         filtered_words = delete_latin_words_from_list(filtered_words)
         filtered_words = delete_newline_elements(filtered_words)
         filtered_words = [sublist for sublist in filtered_words if len(sublist) == 2]
-        return filtered_words
+        
+        seen = set()
+        unique_filtered_words = []
+        for sublist in filtered_words:
+            key = sublist[0]
+            if key not in seen:
+                unique_filtered_words.append(sublist)
+                seen.add(key)
+        return unique_filtered_words
 
     except requests.exceptions.RequestException as e:
         print(f"Error during request: {e}")
