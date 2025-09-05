@@ -66,16 +66,26 @@ def index():
         return render_template("homepage.html", words=words, next_page=next_page, prev_page=prev_page)
     if request.method == "POST":
         words = data_proccessing_unit.scrape_japanese_words(request.form['url'])
-    try:
-        for word in words:
-            db.session.add(Vocab(readingJapanese=word[0], wordType=word[1], translation=""))
-    except Exception as e:
-        print(f"{word}: {e}")
-    db.session.commit()
-    fiveWords = Vocab.query.limit(5).all()
-    next_page = 1
-    prev_page = 0
-    return render_template("homepage.html", words=fiveWords, next_page=next_page, prev_page=prev_page)
+        try:
+            for word in words:
+                db.session.add(Vocab(readingJapanese=word[0], wordType=word[1], translation=""))
+        except Exception as e:
+            print(f"{word}: {e}")
+        db.session.commit()
+        fiveWords = Vocab.query.limit(5).all()
+        # Translate and update only if translation is missing
+        for vocab in fiveWords:
+            if not vocab.translation:
+                translation = data_proccessing_unit.get_jisho_translation(vocab.readingJapanese)
+                if isinstance(translation, list):
+                    translation = "; ".join(translation)
+                else:
+                    translation = "list conversion error"
+                vocab.translation = translation
+                db.session.commit()
+        next_page = 1
+        prev_page = 0
+        return render_template("homepage.html", words=fiveWords, next_page=next_page, prev_page=prev_page)
     
 if __name__ in "__main__":
     with app.app_context():
