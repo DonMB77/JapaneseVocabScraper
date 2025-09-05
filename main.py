@@ -29,26 +29,30 @@ def index():
     per_page = 5
     if request.method == "GET":
         words = Vocab.query.offset(page * per_page).limit(per_page).all()
+        for vocab in words:
+            if not vocab.translation:
+                translation = data_proccessing_unit.get_jisho_translation(vocab.readingJapanese)
+                if isinstance(translation, list):
+                    translation = "; ".join(translation)
+                else:
+                    translation = "list conversion error"
+                vocab.translation = translation
+                db.session.commit()
         next_page = page + 1
         prev_page = page - 1
         return render_template("homepage.html", words=words, next_page=next_page, prev_page=prev_page)
     if request.method == "POST":
-        try:
-            db.user.query.delete()
-            db.commit()
-        except Exception as e:
-            print(e)
         words = data_proccessing_unit.scrape_japanese_words(request.form['url'])
-        try:
-            for word in words:
-                translatedWord = data_proccessing_unit.get_jisho_translation(word[0])
-                db.session.add(Vocab(readingJapanese=word[0], wordType=word[1], translation=translatedWord))
-        except Exception as e:
-            print(f"{word}: {e}")
-        db.session.commit()
-        db.session.commit()
-        fiveWords = Vocab.query.limit(5).all()
-        return render_template("homepage.html", words=fiveWords)
+    try:
+        for word in words:
+            db.session.add(Vocab(readingJapanese=word[0], wordType=word[1], translation=""))
+    except Exception as e:
+        print(f"{word}: {e}")
+    db.session.commit()
+    fiveWords = Vocab.query.limit(5).all()
+    next_page = 1
+    prev_page = 0
+    return render_template("homepage.html", words=fiveWords, next_page=next_page, prev_page=prev_page)
     
 if __name__ in "__main__":
     with app.app_context():
