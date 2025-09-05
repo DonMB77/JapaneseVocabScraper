@@ -17,11 +17,21 @@ class Vocab(db.Model):
     def __repr__(self) -> str:
         return f"Task {self.id}"
 
+@app.route("/clear", methods=["POST"])
+def clear():
+    Vocab.query.delete()
+    db.session.commit()
+    return redirect("/")
 
 @app.route("/", methods=["POST", "GET"])
 def index():
+    page = int(request.args.get("page", 0))
+    per_page = 5
     if request.method == "GET":
-        return render_template("homepage.html")
+        words = Vocab.query.offset(page * per_page).limit(per_page).all()
+        next_page = page + 1
+        prev_page = page - 1
+        return render_template("homepage.html", words=words, next_page=next_page, prev_page=prev_page)
     if request.method == "POST":
         try:
             db.user.query.delete()
@@ -31,15 +41,14 @@ def index():
         words = data_proccessing_unit.scrape_japanese_words(request.form['url'])
         try:
             for word in words:
-                db.session.add(Vocab(readingJapanese=word[0], wordType=word[1], translation=""))
+                translatedWord = data_proccessing_unit.get_jisho_translation(word[0])
+                db.session.add(Vocab(readingJapanese=word[0], wordType=word[1], translation=translatedWord))
         except Exception as e:
             print(f"{word}: {e}")
         db.session.commit()
         db.session.commit()
         fiveWords = Vocab.query.limit(5).all()
-        fiveWordsMeaning = [data_proccessing_unit.get_jisho_translation(vocab.readingJapanese) for vocab in fiveWords]
-        fiveWordsList = [[vocab.readingJapanese, vocab.wordType, fiveWordsMeaning[i]] for i, vocab in enumerate(fiveWords)]
-        return render_template("homepage.html", words=fiveWordsList, meanings=fiveWordsMeaning)
+        return render_template("homepage.html", words=fiveWords)
     
 if __name__ in "__main__":
     with app.app_context():

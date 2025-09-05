@@ -8,7 +8,7 @@
 {% if words|length == 0 %}
 <div class="input-group mb-3">
     <form action="/" method="POST">
-        <input type="text" name="url" lass="form-control" placeholder="Input URL" aria-label="Recipient's username"
+        <input type="text" name="url" class="form-control" placeholder="Input URL" aria-label="Recipient's username"
             aria-describedby="button-addon2">
         <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Submit</button>
     </form>
@@ -24,12 +24,26 @@
             </tr>
             {% for item in words %}
             <tr>
-                <td>{{item[0]}}</td>
-                <td>{{item[1]}}</td>
-                <td>{{item[2]}}</td>
+                <td>{{ item.readingJapanese }}</td>
+                <td>{{ item.wordType }}</td>
+                <td>{{ item.translation }}</td>
             </tr>
             {% endfor %}
         </table>
-        {%  endif %}
+        <form method="get" action="/">
+            <input type="hidden" name="page" value="{{ next_page }}">
+            <button type="submit" class="btn btn-outline-secondary">Next 5</button>
+        </form>
+        {% if prev_page >= 0 %}
+        <form method="get" action="/" style="display:inline;">
+            <input type="hidden" name="page" value="{{ prev_page }}">
+            <button type="submit" class="btn btn-outline-secondary">Previous 5</button>
+        </form>
+        {% endif %}
+        <!-- Clear Database Button -->
+        <form method="post" action="/clear" style="margin-top: 1em;">
+            <button type="submit" class="btn btn-danger">Clear Database</button>
+        </form>
+    {% endif %}
 </div>
 {% endblock %}
