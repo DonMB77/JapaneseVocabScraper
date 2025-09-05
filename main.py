@@ -17,6 +17,14 @@ class Vocab(db.Model):
     def __repr__(self) -> str:
         return f"Task {self.id}"
 
+class SavedVocab(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    readingJapanese = db.Column(db.String(50), nullable=False)
+    wordType = db.Column(db.String(6), nullable=False)
+    translation = db.Column(db.String(300), nullable=False)
+    def __repr__(self) -> str:
+        return f"Task {self.id}"
+
 @app.route("/clear", methods=["POST"])
 def clear():
     Vocab.query.delete()
