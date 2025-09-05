@@ -33,6 +33,7 @@
                         <input type="hidden" name="readingJapanese" value="{{ item.readingJapanese }}">
                         <input type="hidden" name="wordType" value="{{ item.wordType }}">
                         <input type="hidden" name="translation" value="{{ item.translation }}">
+                        <input type="hidden" name="page" value="{{ request.args.get('page', 0) }}">
                         <button type="submit" class="btn btn-success btn-sm">Save</button>
                     </form>
                 </td>

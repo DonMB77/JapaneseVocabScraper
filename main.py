@@ -24,6 +24,21 @@ class SavedVocab(db.Model):
     translation = db.Column(db.String(300), nullable=False)
     def __repr__(self) -> str:
         return f"Task {self.id}"
+    
+@app.route("/save_vocab", methods=["POST"])
+def save_vocab():
+    readingJapanese = request.form.get("readingJapanese")
+    wordType = request.form.get("wordType")
+    translation = request.form.get("translation")
+    if readingJapanese and wordType and translation is not None:
+        db.session.add(SavedVocab(
+            readingJapanese=readingJapanese,
+            wordType=wordType,
+            translation=translation
+        ))
+        db.session.commit()
+    page = int(request.form.get("page", 0))
+    return redirect(f"/?page={page}")
 
 @app.route("/clear", methods=["POST"])
 def clear():
