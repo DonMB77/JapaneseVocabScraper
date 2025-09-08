@@ -30,7 +30,6 @@ def save_vocab():
     readingJapanese = request.form.get("readingJapanese")
     wordType = request.form.get("wordType")
     translation = request.form.get("translation")
-    # Check if the entry already exists
     exists = SavedVocab.query.filter_by(
         readingJapanese=readingJapanese,
         wordType=wordType,
@@ -52,9 +51,9 @@ def clear():
     db.session.commit()
     return redirect("/")
 
-@app.route("/clear-saved", methods=["POST"])
-def clear():
-    Vocab.query.delete()
+@app.route("/clear_saved", methods=["POST"])
+def clearSaved():
+    SavedVocab.query.delete()
     db.session.commit()
     return redirect("/saved")
 
