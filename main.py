@@ -46,6 +46,11 @@ def clear():
     db.session.commit()
     return redirect("/")
 
+@app.route("/saved", methods=["GET"])
+def show_saved_words():
+    saved_words = SavedVocab.query.all()
+    return render_template("saved_vocab.html", words=saved_words)
+
 @app.route("/", methods=["POST", "GET"])
 def index():
     page = int(request.args.get("page", 0))
