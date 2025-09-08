@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<h1>Saved Vocabulary</h1>
+<table>
+    <tr>
+        <th>readingJapanese</th>
+        <th>wordType</th>
+        <th>translation</th>
+    </tr>
+    {% for item in words %}
+        <tr>
+            <td>{{ item.readingJapanese }}</td>
+            <td>{{ item.wordType }}</td>
+            <td>{{ item.translation }}</td>
+        </tr>
+    {% endfor %}
+</table>
+{% endblock %}
