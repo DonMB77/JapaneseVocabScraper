@@ -30,7 +30,13 @@ def save_vocab():
     readingJapanese = request.form.get("readingJapanese")
     wordType = request.form.get("wordType")
     translation = request.form.get("translation")
-    if readingJapanese and wordType and translation is not None:
+    # Check if the entry already exists
+    exists = SavedVocab.query.filter_by(
+        readingJapanese=readingJapanese,
+        wordType=wordType,
+        translation=translation
+    ).first()
+    if readingJapanese and wordType and translation is not None and not exists:
         db.session.add(SavedVocab(
             readingJapanese=readingJapanese,
             wordType=wordType,
