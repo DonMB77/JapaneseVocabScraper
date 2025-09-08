@@ -52,6 +52,12 @@ def clear():
     db.session.commit()
     return redirect("/")
 
+@app.route("/clear-saved", methods=["POST"])
+def clear():
+    Vocab.query.delete()
+    db.session.commit()
+    return redirect("/saved")
+
 @app.route("/saved", methods=["GET"])
 def show_saved_words():
     saved_words = SavedVocab.query.all()
