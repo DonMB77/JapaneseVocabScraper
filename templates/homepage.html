@@ -19,6 +19,7 @@
         <table>
             <tr>
                 <td>readingJapanese</td>
+                <td>furigana</td>
                 <td>wordType</td>
                 <td>translation</td>
                 <td>Save</td>
@@ -26,11 +27,13 @@
             {% for item in words %}
             <tr>
                 <td>{{ item.readingJapanese }}</td>
+                <td>{{ item.furigana }}</td>
                 <td>{{ item.wordType }}</td>
                 <td>{{ item.translation }}</td>
                 <td>
                     <form method="post" action="/save_vocab" style="display:inline;">
                         <input type="hidden" name="readingJapanese" value="{{ item.readingJapanese }}">
+                        <input type="hidden" name="furigana" value="{{ item.furigana }}">
                         <input type="hidden" name="wordType" value="{{ item.wordType }}">
                         <input type="hidden" name="translation" value="{{ item.translation }}">
                         <input type="hidden" name="page" value="{{ request.args.get('page', 0) }}">

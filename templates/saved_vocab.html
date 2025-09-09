@@ -5,12 +5,14 @@
 <table>
     <tr>
         <th>readingJapanese</th>
+        <th>furigana</th>
         <th>wordType</th>
         <th>translation</th>
     </tr>
     {% for item in words %}
         <tr>
             <td>{{ item.readingJapanese }}</td>
+            <td>{{ item.furigana }}</td>
             <td>{{ item.wordType }}</td>
             <td>{{ item.translation }}</td>
         </tr>

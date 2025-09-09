@@ -14,32 +14,37 @@ class Vocab(db.Model):
     readingJapanese = db.Column(db.String(50), nullable=False)
     wordType = db.Column(db.String(6), nullable=False)
     translation = db.Column(db.String(300), nullable=False)
+    furigana = db.Column(db.String(100), nullable=True)
     def __repr__(self) -> str:
-        return f"Task {self.id}"
+        return f"Vocab {self.id}"
 
 class SavedVocab(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     readingJapanese = db.Column(db.String(50), nullable=False)
     wordType = db.Column(db.String(6), nullable=False)
     translation = db.Column(db.String(300), nullable=False)
+    furigana = db.Column(db.String(100), nullable=True)
     def __repr__(self) -> str:
-        return f"Task {self.id}"
+        return f"SavedVocab {self.id}"
     
 @app.route("/save_vocab", methods=["POST"])
 def save_vocab():
     readingJapanese = request.form.get("readingJapanese")
     wordType = request.form.get("wordType")
     translation = request.form.get("translation")
+    furigana = request.form.get("furigana")
     exists = SavedVocab.query.filter_by(
         readingJapanese=readingJapanese,
         wordType=wordType,
-        translation=translation
+        translation=translation,
+        furigana=furigana
     ).first()
     if readingJapanese and wordType and translation is not None and not exists:
         db.session.add(SavedVocab(
             readingJapanese=readingJapanese,
             wordType=wordType,
-            translation=translation
+            translation=translation,
+            furigana=furigana
         ))
         db.session.commit()
     page = int(request.form.get("page", 0))
@@ -89,15 +94,13 @@ def index():
             print(f"{word}: {e}")
         db.session.commit()
         fiveWords = Vocab.query.limit(5).all()
-        # Translate and update only if translation is missing
         for vocab in fiveWords:
             if not vocab.translation:
-                translation = data_proccessing_unit.get_jisho_translation(vocab.readingJapanese)
-                if isinstance(translation, list):
-                    translation = "; ".join(translation)
-                else:
-                    translation = "list conversion error"
+                result = data_proccessing_unit.get_jisho_translation(word[0])
+                translation = "; ".join(result["translations"]) if isinstance(result["translations"], list) else result["translations"]
+                furigana = result["furigana"]
                 vocab.translation = translation
+                vocab.furigana = furigana
                 db.session.commit()
         next_page = 1
         prev_page = 0

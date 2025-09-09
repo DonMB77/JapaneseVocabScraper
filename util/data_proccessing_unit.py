@@ -51,7 +51,7 @@ def scrape_japanese_words(url):
         print(f"An unexpected error occurred: {e}")
         return []
     
-def get_jisho_translation(word: str) -> list:
+def get_jisho_translation(word: str) -> dict:
     url = f"https://jisho.org/api/v1/search/words?keyword={word}"
     try:
         response = requests.get(url)
@@ -63,8 +63,14 @@ def get_jisho_translation(word: str) -> list:
             all_translations = []
             for sense in first_result['senses']:
                 all_translations.extend(sense['english_definitions'])
-            return all_translations
+            furigana = ""
+            if first_result['japanese']:
+                furigana = first_result['japanese'][0].get('reading', "")
+            return {
+                "translations": all_translations,
+                "furigana": furigana
+            }
     except requests.exceptions.RequestException as e:
-        return "Error fetching translation."
+        return {"translations": ["Error fetching translation."], "furigana": ""}
         
-    return []
+    return {"translations": [], "furigana": ""}
