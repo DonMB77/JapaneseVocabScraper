@@ -2,7 +2,6 @@ import re
 import requests
 from bs4 import BeautifulSoup
 import nagisa
-import simplejson
 
 def has_latin_characters(element):
     return bool(re.search('[a-zA-Z0-9]', element))

@@ -72,9 +72,8 @@ def index():
     page = int(request.args.get("page", 0))
     per_page = 5
 
-    # Helper: Remove Vocab entries that are already in SavedVocab
     def remove_saved_vocab(words):
-        for vocab in words[:]:  # iterate over a copy
+        for vocab in words[:]:
             exists = SavedVocab.query.filter_by(
                 readingJapanese=vocab.readingJapanese,
                 wordType=vocab.wordType,
@@ -95,9 +94,7 @@ def index():
                 vocab.translation = translation
                 vocab.furigana = furigana
                 db.session.commit()
-        # Remove already-saved words
         remove_saved_vocab(words)
-        # Re-fetch after deletion
         words = Vocab.query.offset(page * per_page).limit(per_page).all()
         next_page = page + 1
         prev_page = page - 1
@@ -120,9 +117,7 @@ def index():
                 vocab.translation = translation
                 vocab.furigana = furigana
                 db.session.commit()
-        # Remove already-saved words
         remove_saved_vocab(fiveWords)
-        # Re-fetch after deletion
         fiveWords = Vocab.query.limit(5).all()
         next_page = 1
         prev_page = 0
