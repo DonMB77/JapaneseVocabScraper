@@ -96,7 +96,7 @@ def index():
         fiveWords = Vocab.query.limit(5).all()
         for vocab in fiveWords:
             if not vocab.translation:
-                result = data_proccessing_unit.get_jisho_translation(word[0])
+                result = data_proccessing_unit.get_jisho_translation(vocab.readingJapanese)
                 translation = "; ".join(result["translations"]) if isinstance(result["translations"], list) else result["translations"]
                 furigana = result["furigana"]
                 vocab.translation = translation
