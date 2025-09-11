@@ -4,18 +4,18 @@
 <h1>Saved Vocabulary</h1>
 <table>
     <tr>
-        <th>readingJapanese</th>
-        <th>furigana</th>
-        <th>wordType</th>
-        <th>translation</th>
+        <td>Reading</td>
+        <td>Furigana</td>
+        <td>Word Type</td>
+        <td>Translation</td>
     </tr>
     {% for item in words %}
-        <tr>
-            <td>{{ item.readingJapanese }}</td>
-            <td>{{ item.furigana }}</td>
-            <td>{{ item.wordType }}</td>
-            <td>{{ item.translation }}</td>
-        </tr>
+    <tr>
+        <td>{{ item.readingJapanese }}</td>
+        <td>{{ item.furigana }}</td>
+        <td>{{ item.wordType }}</td>
+        <td>{{ item.translation }}</td>
+    </tr>
     {% endfor %}
 </table>
 <form method="post" action="/clear_saved" style="margin-top: 1em;">
