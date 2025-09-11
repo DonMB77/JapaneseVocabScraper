@@ -85,6 +85,9 @@ def index():
         db.session.commit()
 
     if request.method == "GET":
+        total_words = Vocab.query.count()
+        total_pages = (total_words + per_page - 1) // per_page
+        page_numbers = list(range(total_pages))
         words = Vocab.query.offset(page * per_page).limit(per_page).all()
         for vocab in words:
             if not vocab.translation:
@@ -98,7 +101,15 @@ def index():
         words = Vocab.query.offset(page * per_page).limit(per_page).all()
         next_page = page + 1
         prev_page = page - 1
-        return render_template("homepage.html", words=words, next_page=next_page, prev_page=prev_page)
+        return render_template(
+            "homepage.html",
+            words=words,
+            next_page=next_page,
+            prev_page=prev_page,
+            page=page,
+            page_numbers=page_numbers,
+            total_pages=total_pages
+        )
 
     if request.method == "POST":
         words = data_proccessing_unit.scrape_japanese_words(request.form['url'])
@@ -119,9 +130,20 @@ def index():
                 db.session.commit()
         remove_saved_vocab(fiveWords)
         fiveWords = Vocab.query.limit(5).all()
+        total_words = Vocab.query.count()
+        total_pages = (total_words + per_page - 1) // per_page
+        page_numbers = list(range(total_pages))
         next_page = 1
         prev_page = 0
-        return render_template("homepage.html", words=fiveWords, next_page=next_page, prev_page=prev_page)
+        return render_template(
+            "homepage.html",
+            words=fiveWords,
+            next_page=next_page,
+            prev_page=prev_page,
+            page=0,
+            page_numbers=page_numbers,
+            total_pages=total_pages
+        )
     
 if __name__ in "__main__":
     with app.app_context():

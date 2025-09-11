@@ -16,46 +16,45 @@
 {% endif %}
 <div>
     {% if words|length > 0 %}
-        <table>
-            <tr>
-                <td>readingJapanese</td>
-                <td>furigana</td>
-                <td>wordType</td>
-                <td>translation</td>
-                <td>Save</td>
-            </tr>
-            {% for item in words %}
-            <tr>
-                <td>{{ item.readingJapanese }}</td>
-                <td>{{ item.furigana }}</td>
-                <td>{{ item.wordType }}</td>
-                <td>{{ item.translation }}</td>
-                <td>
-                    <form method="post" action="/save_vocab" style="display:inline;">
-                        <input type="hidden" name="readingJapanese" value="{{ item.readingJapanese }}">
-                        <input type="hidden" name="furigana" value="{{ item.furigana }}">
-                        <input type="hidden" name="wordType" value="{{ item.wordType }}">
-                        <input type="hidden" name="translation" value="{{ item.translation }}">
-                        <input type="hidden" name="page" value="{{ request.args.get('page', 0) }}">
-                        <button type="submit" class="btn btn-success btn-sm">Save</button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
-        <form method="get" action="/">
-            <input type="hidden" name="page" value="{{ next_page }}">
-            <button type="submit" class="btn btn-outline-secondary">Next 5</button>
-        </form>
-        {% if prev_page >= 0 %}
-        <form method="get" action="/" style="display:inline;">
-            <input type="hidden" name="page" value="{{ prev_page }}">
-            <button type="submit" class="btn btn-outline-secondary">Previous 5</button>
-        </form>
+    <table>
+        <tr>
+            <td>readingJapanese</td>
+            <td>furigana</td>
+            <td>wordType</td>
+            <td>translation</td>
+            <td>Save</td>
+        </tr>
+        {% for item in words %}
+        <tr>
+            <td>{{ item.readingJapanese }}</td>
+            <td>{{ item.furigana }}</td>
+            <td>{{ item.wordType }}</td>
+            <td>{{ item.translation }}</td>
+            <td>
+                <form method="post" action="/save_vocab" style="display:inline;">
+                    <input type="hidden" name="readingJapanese" value="{{ item.readingJapanese }}">
+                    <input type="hidden" name="furigana" value="{{ item.furigana }}">
+                    <input type="hidden" name="wordType" value="{{ item.wordType }}">
+                    <input type="hidden" name="translation" value="{{ item.translation }}">
+                    <input type="hidden" name="page" value="{{ request.args.get('page', 0) }}">
+                    <button type="submit" class="btn btn-success btn-sm">Save</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <div class="pagination">
+        {% for num in page_numbers %}
+        {% if num == page %}
+        <span class="active">{{ num + 1 }}</span>
+        {% else %}
+        <a href="/?page={{ num }}">{{ num + 1 }}</a>
         {% endif %}
-        <form method="post" action="/clear" style="margin-top: 1em;">
-            <button type="submit" class="btn btn-danger">Clear Database</button>
-        </form>
+        {% endfor %}
+    </div>
+    <form method="post" action="/clear" style="margin-top: 1em;">
+        <button type="submit" class="btn btn-danger">Clear Database</button>
+    </form>
     {% endif %}
 </div>
 {% endblock %}
