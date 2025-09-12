@@ -1,8 +1,12 @@
 {% extends 'base.html' %}
 
+{% block head %}
+<link rel="stylesheet" href="../static/style.css">
+{% endblock %}
+
 {% block body %}
 <h1>Saved Vocabulary</h1>
-<table>
+<table class="table table-bordered">
     <tr>
         <td>Reading</td>
         <td>Furigana</td>
