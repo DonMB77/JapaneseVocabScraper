@@ -8,10 +8,35 @@
     margin: auto;
 }
 
+.pagination {
+    margin: 20px 0;
+    text-align: center;
+}
+
 .pagination a,
 .pagination span {
-    margin-right: 5mm;
     display: inline-block;
-    min-width: 24px;
-    text-align: center;
+    margin-right: 5mm;
+    padding: 6px 14px;
+    border-radius: 6px;
+    background: #f8f9fa;
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.2s, color 0.2s;
+    border: 1px solid #dee2e6;
+}
+
+.pagination a:hover {
+    background: #007bff;
+    color: #fff;
+    text-decoration: none;
+}
+
+.pagination .active {
+    background: #007bff;
+    color: #fff;
+    font-weight: bold;
+    border: 1px solid #007bff;
+    cursor: default;
 }
