@@ -31,6 +31,25 @@
         {% endif %}
     {% endfor %}
 </div>
+<form method="post" action="{{ url_for('add_saved_vocab') }}" class="mb-4">
+    <div class="row g-2 align-items-center">
+        <div class="col">
+            <input type="text" name="readingJapanese" class="form-control" placeholder="Reading" required>
+        </div>
+        <div class="col">
+            <input type="text" name="furigana" class="form-control" placeholder="Furigana">
+        </div>
+        <div class="col">
+            <input type="text" name="wordType" class="form-control" placeholder="Word Type" required>
+        </div>
+        <div class="col">
+            <input type="text" name="translation" class="form-control" placeholder="Translation" required>
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">Add</button>
+        </div>
+    </div>
+</form>
 <form method="post" action="/clear_saved" style="margin-top: 1em;">
     <button type="submit" class="btn btn-danger">Clear Database</button>
 </form>

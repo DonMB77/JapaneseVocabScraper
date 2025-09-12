@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request
+from flask import Flask, render_template, redirect, request, url_for
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from util import data_proccessing_unit
@@ -160,6 +160,22 @@ def index():
             total_pages=total_pages
         )
     
+@app.route("/add_saved_vocab", methods=["POST"])
+def add_saved_vocab():
+    readingJapanese = request.form.get("readingJapanese")
+    furigana = request.form.get("furigana")
+    wordType = request.form.get("wordType")
+    translation = request.form.get("translation")
+    if readingJapanese and wordType and translation:
+        db.session.add(SavedVocab(
+            readingJapanese=readingJapanese,
+            furigana=furigana,
+            wordType=wordType,
+            translation=translation
+        ))
+        db.session.commit()
+    return redirect(url_for('show_saved_words'))
+
 if __name__ in "__main__":
     with app.app_context():
         db.create_all()
