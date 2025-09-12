@@ -64,8 +64,23 @@ def clearSaved():
 
 @app.route("/saved", methods=["GET"])
 def show_saved_words():
-    saved_words = SavedVocab.query.all()
-    return render_template("saved_vocab.html", words=saved_words)
+    page = int(request.args.get("page", 0))
+    per_page = 5
+    total_words = SavedVocab.query.count()
+    total_pages = (total_words + per_page - 1) // per_page
+    page_numbers = list(range(total_pages))
+    words = SavedVocab.query.offset(page * per_page).limit(per_page).all()
+    next_page = page + 1
+    prev_page = page - 1
+    return render_template(
+        "saved_vocab.html",
+        words=words,
+        next_page=next_page,
+        prev_page=prev_page,
+        page=page,
+        page_numbers=page_numbers,
+        total_pages=total_pages
+    )
 
 @app.route("/", methods=["POST", "GET"])
 def index():

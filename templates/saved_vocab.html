@@ -22,6 +22,15 @@
     </tr>
     {% endfor %}
 </table>
+<div class="pagination">
+    {% for num in page_numbers %}
+        {% if num == page %}
+            <span class="active">{{ num + 1 }}</span>
+        {% else %}
+            <a href="{{ url_for('show_saved_words', page=num) }}">{{ num + 1 }}</a>
+        {% endif %}
+    {% endfor %}
+</div>
 <form method="post" action="/clear_saved" style="margin-top: 1em;">
     <button type="submit" class="btn btn-danger">Clear Database</button>
 </form>
