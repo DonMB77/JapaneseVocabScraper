@@ -176,6 +176,13 @@ def add_saved_vocab():
         db.session.commit()
     return redirect(url_for('show_saved_words'))
 
+@app.route("/delete_saved_vocab/<int:vocab_id>", methods=["POST"])
+def delete_saved_vocab(vocab_id):
+    vocab = SavedVocab.query.get_or_404(vocab_id)
+    db.session.delete(vocab)
+    db.session.commit()
+    return redirect(url_for('show_saved_words', page=request.args.get("page", 0)))
+
 if __name__ in "__main__":
     with app.app_context():
         db.create_all()
