@@ -66,10 +66,17 @@ def clearSaved():
 def show_saved_words():
     page = int(request.args.get("page", 0))
     per_page = 5
-    total_words = SavedVocab.query.count()
+    search = request.args.get("q", "").strip()
+    query = SavedVocab.query
+    if search:
+        query = query.filter(
+            (SavedVocab.translation.contains(search)) |
+            (SavedVocab.furigana.contains(search))
+        )
+    total_words = query.count()
     total_pages = (total_words + per_page - 1) // per_page
     page_numbers = list(range(total_pages))
-    words = SavedVocab.query.offset(page * per_page).limit(per_page).all()
+    words = query.offset(page * per_page).limit(per_page).all()
     next_page = page + 1
     prev_page = page - 1
     return render_template(

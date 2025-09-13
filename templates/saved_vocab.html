@@ -6,6 +6,12 @@
 
 {% block body %}
 <h1>Saved Vocabulary</h1>
+<form method="get" action="{{ url_for('show_saved_words') }}" class="mb-4">
+    <div class="input-group">
+        <input type="text" name="q" class="form-control" placeholder="Search translation or furigana..." value="{{ request.args.get('q', '') }}">
+        <button type="submit" class="btn btn-outline-primary">Search</button>
+    </div>
+</form>
 <table class="table table-bordered">
     <tr>
         <td>Reading</td>
