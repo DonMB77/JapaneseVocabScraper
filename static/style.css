@@ -46,10 +46,25 @@ body {
     text-decoration: none;
 }
 
-.pagination .active {
-    background: #007bff;
+.pagination .page-link {
+    padding: 6px 14px;
+    border-radius: 6px;
+    margin-right: 5mm;
+    box-sizing: border-box;
+}
+
+.pagination .active .page-link,
+.pagination .page-item.active .page-link {
+    background-color: #007bff;
     color: #fff;
-    font-weight: bold;
-    border: 1px solid #007bff;
-    cursor: default;
+    border-color: #007bff;
+    box-shadow: none;
+}
+
+.pagination .page-item .page-link {
+    border: 1px solid #dee2e6;
+}
+
+.pagination .page-item {
+    margin-right: 0;
 }
