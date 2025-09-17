@@ -23,6 +23,7 @@
             <td>Furigana</td>
             <td>Word Type</td>
             <td>Translation</td>
+            <td>Details</td>
             <td>Save Button</td>
         </tr>
         {% for item in words %}
@@ -31,6 +32,23 @@
             <td>{{ item.furigana }}</td>
             <td>{{ item.wordType }}</td>
             <td>{{ item.translation }}</td>
+            <td>
+                <button type="button" class="btn btn-info btn-sm" onclick="showPopup('popup-{{ loop.index0 }}')">Details</button>
+                <div id="popup-{{ loop.index0 }}" class="custom-popup" style="display:none;">
+                    <div class="custom-popup-content">
+                        <span class="close-btn" onclick="hidePopup('popup-{{ loop.index0 }}')">&times;</span>
+                        <h5>Word Details</h5>
+                        <div class="d-flex flex-row mb-2 gap-3">
+                            <div>{{ item.readingJapanese }}</div>
+                            <div>{{ item.furigana }}</div>
+                            <div>{{ item.wordType }}</div>
+                        </div>
+                        <div>
+                            {{ item.translation }}
+                        </div>
+                    </div>
+                </div>
+            </td>
             <td>
                 <form method="post" action="/save_vocab" style="display:inline;">
                     <input type="hidden" name="readingJapanese" value="{{ item.readingJapanese }}">
@@ -67,4 +85,12 @@
     </form>
     {% endif %}
 </div>
+<script>
+function showPopup(id) {
+    document.getElementById(id).style.display = 'flex';
+}
+function hidePopup(id) {
+    document.getElementById(id).style.display = 'none';
+}
+</script>
 {% endblock %}
