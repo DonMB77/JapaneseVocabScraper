@@ -121,6 +121,14 @@ def index():
                 db.session.commit()
         remove_saved_vocab(words)
         words = Vocab.query.offset(page * per_page).limit(per_page).all()
+        for vocab in words:
+            if not vocab.translation:
+                result = data_proccessing_unit.get_jisho_translation(vocab.readingJapanese)
+                translation = "; ".join(result["translations"]) if isinstance(result["translations"], list) else result["translations"]
+                furigana = result["furigana"]
+                vocab.translation = translation
+                vocab.furigana = furigana
+                db.session.commit()
         next_page = page + 1
         prev_page = page - 1
         return render_template(

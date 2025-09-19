@@ -6,8 +6,8 @@
 
 {% block body %}
 {% if words|length == 0 %}
-<div class="input-group mb-3">
-    <form action="/" method="POST">
+<div class="d-flex justify-content-center align-items-center" style="min-height: 30vh;">
+    <form action="/" method="POST" class="input-group" style="max-width: 500px;">
         <input type="text" name="url" class="form-control" placeholder="Input URL" aria-label="Recipient's username"
             aria-describedby="button-addon2">
         <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Submit</button>
@@ -15,8 +15,8 @@
 </div>
 {% endif %}
 <div>
-    <h1>Fetched Vocabulary</h1>
     {% if words|length > 0 %}
+    <h1>Fetched Vocabulary</h1>
     <table class="table table-bordered">
         <tr>
             <td>Reading</td>
